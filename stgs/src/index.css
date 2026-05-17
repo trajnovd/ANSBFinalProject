@@ -258,3 +258,46 @@ code {
 .reveal-3 { animation-delay: 0.14s; }
 .reveal-4 { animation-delay: 0.22s; }
 .reveal-5 { animation-delay: 0.32s; }
+
+/* ── Responsive grid utilities ─────────────────────────────────────────────
+   Pages that use these get auto-stacking on tablet/phone widths without
+   needing per-component media queries. */
+.stat-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+}
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.three-col {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+@media (max-width: 1100px) {
+  .stat-grid  { grid-template-columns: repeat(2, 1fr); }
+  .three-col  { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 640px) {
+  .stat-grid  { grid-template-columns: 1fr; }
+  .two-col    { grid-template-columns: 1fr; }
+  .three-col  { grid-template-columns: 1fr; }
+  h1 { font-size: 22px; }
+  h2 { font-size: 18px; }
+}
+
+/* Login screen — stack the brand panel above the form on phone */
+.login-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100vh;
+}
+@media (max-width: 900px) {
+  .login-split { grid-template-columns: 1fr; }
+  .login-brand { display: none !important; }
+  .login-form-panel { padding: 32px 20px !important; }
+}

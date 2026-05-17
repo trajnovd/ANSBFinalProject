@@ -34,7 +34,7 @@ export default function Dashboard() {
         {view.stats.map(st => <Stat key={st.label} {...st} />)}
       </div>
 
-      <div className="reveal reveal-3" style={{ display: 'grid', gridTemplateColumns: '1.7fr 1fr', gap: 20 }}>
+      <div className="reveal reveal-3 two-col" style={{ gap: 20 }}>
         <Card title={view.listTitle} subtitle={view.listSubtitle} action={view.listAction}>
           {view.list.length === 0 ? (
             <EmptyState

@@ -78,7 +78,7 @@ export default function NewExpenseReport() {
 
       <div style={{ display: 'grid', gridTemplateColumns: '2fr 1fr', gap: 18 }}>
         <Card title="Пресметка">
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          <div className="two-col" style={{ gap: 14 }}>
             <Field label={t('uc04.daysAway')} required>
               <Input type="number" min="1" value={form.daysAway} onChange={e => setField('daysAway', e.target.value)} />
             </Field>
@@ -90,7 +90,7 @@ export default function NewExpenseReport() {
             {t('uc04.perDiemAuto', { count: form.daysAway || 0, rate: form.perDiemRate || 0, total: formatMoney(perDiemTotal) })}
           </div>
           <hr style={{ margin: '14px 0' }} />
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+          <div className="two-col" style={{ gap: 14 }}>
             <Field label={t('uc04.transport')}>
               <Input type="number" min="0" value={form.transport} onChange={e => setField('transport', e.target.value)} />
             </Field>

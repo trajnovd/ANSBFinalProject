@@ -56,13 +56,9 @@ export default function Login() {
   ]
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: 'var(--bg)',
-      display: 'grid', gridTemplateColumns: '1fr 1fr',
-    }}>
+    <div className="login-split" style={{ background: 'var(--bg)' }}>
       {/* Brand / feature side */}
-      <div style={{
+      <div className="login-brand" style={{
         display: 'flex', flexDirection: 'column', justifyContent: 'space-between',
         padding: '40px 56px',
         background: `
@@ -164,7 +160,7 @@ export default function Login() {
       </div>
 
       {/* Form side */}
-      <div style={{
+      <div className="login-form-panel" style={{
         display: 'flex', flexDirection: 'column', justifyContent: 'center',
         padding: '40px 56px',
         background: 'var(--surface)',
@@ -238,7 +234,7 @@ export default function Login() {
             <I.Sparkles size={14} style={{ color: 'var(--violet)' }} />
             <div className="eyebrow" style={{ color: 'var(--fg-muted)' }}>Demo акаунти · еднокликни најава</div>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 6 }}>
+          <div className="two-col" style={{ gap: 6 }}>
             {demoUsers.map(u => (
               <button key={u.id} onClick={() => quickLoginAs(u.id)}
                 onMouseEnter={e => { e.currentTarget.style.background = 'var(--bg-subtle)'; e.currentTarget.style.borderColor = 'var(--border-strong)' }}

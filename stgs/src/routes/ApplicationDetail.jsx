@@ -205,7 +205,7 @@ export default function ApplicationDetail() {
 }
 
 function Grid({ children }) {
-  return <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '10px 24px' }}>{children}</div>
+  return <div className="two-col" style={{ gap: '10px 24px' }}>{children}</div>
 }
 
 function Item({ label, children, full }) {

@@ -1,19 +1,25 @@
 import { useTranslation } from 'react-i18next'
-import { NavLink, useNavigate } from 'react-router-dom'
+import { NavLink, useNavigate, useLocation } from 'react-router-dom'
 import { useAuth } from '../lib/auth.jsx'
 import LangSwitch from './LangSwitch.jsx'
 import BackendBadge from './BackendBadge.jsx'
 import { Badge } from './ui.jsx'
 import { useEffect, useState } from 'react'
 import { getState, subscribe, markNotificationRead } from '../lib/store.js'
+import { useIsMobile } from '../lib/useMediaQuery.js'
 import * as I from './icons.jsx'
 
 export default function AppShell({ children }) {
   const { t } = useTranslation()
   const { user, logout } = useAuth()
   const nav = useNavigate()
+  const loc = useLocation()
+  const isMobile = useIsMobile()
   const [notifs, setNotifs] = useState([])
   const [openNotif, setOpenNotif] = useState(false)
+  const [drawerOpen, setDrawerOpen] = useState(false)
+  // Close drawer on every route change
+  useEffect(() => { setDrawerOpen(false) }, [loc.pathname])
 
   useEffect(() => {
     if (!user) return
@@ -28,14 +34,35 @@ export default function AppShell({ children }) {
   const grouped = groupNav(navFor(user.role))
   const initials = (user.firstName?.[0] ?? '') + (user.lastName?.[0] ?? '')
 
+  const sidebarOpen = !isMobile || drawerOpen
+
   return (
-    <div style={{ display: 'grid', gridTemplateColumns: '252px 1fr', minHeight: '100vh', background: 'var(--bg)' }}>
+    <div style={{
+      display: 'grid',
+      gridTemplateColumns: isMobile ? '1fr' : '252px 1fr',
+      minHeight: '100vh',
+      background: 'var(--bg)',
+    }}>
+      {/* Mobile backdrop */}
+      {isMobile && drawerOpen && (
+        <div onClick={() => setDrawerOpen(false)} style={{
+          position: 'fixed', inset: 0, background: 'rgba(15, 23, 42, 0.4)',
+          zIndex: 40, animation: 'fadeUp 0.18s ease both',
+        }} />
+      )}
       {/* Sidebar */}
       <aside style={{
         background: 'var(--surface)',
         borderRight: '1px solid var(--border)',
         display: 'flex', flexDirection: 'column',
-        position: 'sticky', top: 0, height: '100vh',
+        position: isMobile ? 'fixed' : 'sticky',
+        top: 0, left: 0,
+        width: isMobile ? 268 : 'auto',
+        height: '100vh',
+        zIndex: 50,
+        transform: isMobile && !sidebarOpen ? 'translateX(-100%)' : 'translateX(0)',
+        transition: isMobile ? 'transform 0.22s ease' : 'none',
+        boxShadow: isMobile && sidebarOpen ? 'var(--shadow-lg)' : 'none',
       }}>
         {/* Brand */}
         <div style={{
@@ -145,16 +172,37 @@ export default function AppShell({ children }) {
         {/* Top bar */}
         <header style={{
           display: 'flex', alignItems: 'center', gap: 12,
-          padding: '12px 28px',
+          padding: isMobile ? '10px 14px' : '12px 28px',
           background: 'var(--bg)',
           borderBottom: '1px solid var(--border)',
           position: 'sticky', top: 0, zIndex: 10,
           minHeight: 56,
         }}>
-          <div style={{ flex: 1, display: 'flex', alignItems: 'center', gap: 8, color: 'var(--fg-muted)', fontSize: 12.5 }}>
+          {isMobile && (
+            <button onClick={() => setDrawerOpen(o => !o)}
+              aria-label="Menu"
+              style={{
+                width: 36, height: 36,
+                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                background: 'var(--surface)', border: '1px solid var(--border)',
+                borderRadius: 'var(--radius-md)', color: 'var(--fg)',
+              }}>
+              <I.Menu size={18} />
+            </button>
+          )}
+          <div style={{
+            flex: 1, display: 'flex', alignItems: 'center', gap: 8,
+            color: 'var(--fg-muted)', fontSize: 12.5,
+            minWidth: 0, overflow: 'hidden',
+          }}>
             <span style={{ color: 'var(--fg-subtle)' }}>STGS</span>
-            <I.ChevronRight size={12} />
-            <span style={{ color: 'var(--fg-soft)', fontWeight: 500 }}>{t('app.fullName')}</span>
+            {!isMobile && <>
+              <I.ChevronRight size={12} />
+              <span style={{
+                color: 'var(--fg-soft)', fontWeight: 500,
+                whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis',
+              }}>{t('app.fullName')}</span>
+            </>}
           </div>
           <BackendBadge />
           <LangSwitch />
@@ -231,7 +279,7 @@ export default function AppShell({ children }) {
         </header>
         <main style={{
           flex: 1,
-          padding: '28px 32px 56px',
+          padding: isMobile ? '20px 14px 56px' : '28px 32px 56px',
           overflow: 'auto',
         }}>
           <div className="reveal reveal-1">{children}</div>

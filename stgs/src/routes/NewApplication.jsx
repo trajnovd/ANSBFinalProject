@@ -181,7 +181,7 @@ export default function NewApplication() {
 
         {step === 1 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            <div className="two-col" style={{ gap: 14 }}>
               <Field label={t('common.from')} required>
                 <Input type="date" value={form.from} onChange={e => setField('from', e.target.value)} min={new Date().toISOString().slice(0, 10)} />
               </Field>
@@ -247,7 +247,7 @@ export default function NewApplication() {
         {step === 3 && (
           <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
             <h3>{t('common.summary')}</h3>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 14 }}>
+            <div className="two-col" style={{ gap: 14 }}>
               <Summary label={t('uc01.conferenceName')} value={form.conference} />
               <Summary label={t('uc01.location')} value={form.location} />
               <Summary label={t('common.from')} value={formatDate(form.from)} />

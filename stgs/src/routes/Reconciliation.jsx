@@ -81,7 +81,7 @@ export default function Reconciliation() {
               <strong>{activeApp.conference}</strong> · {activeApp.location}
               <div style={{ color: 'var(--color-text-muted)', fontSize: 13 }}>{activeUser.firstName + ' ' + activeUser.lastName} · {formatDate(activeApp.from)} → {formatDate(activeApp.to)}</div>
             </div>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+            <div className="two-col" style={{ gap: 12 }}>
               <Row label={t('uc05.advance')} value={formatMoney(activeApp.advancePaid)} />
               <Row label={t('uc05.realCost')} value={formatMoney(active.realTotal)} />
               <Row label="Дневници" value={formatMoney(active.perDiemTotal)} />

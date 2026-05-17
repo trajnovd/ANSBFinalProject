@@ -50,7 +50,7 @@ export default function CancelApplication() {
         </div>
       )}
 
-      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 18 }}>
+      <div className="two-col" style={{ gap: 18 }}>
         <Card title="Постоечка апликација (за поништување)" subtitle={old.conference}>
           <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
             <Item label="Локација" value={old.location} />
@@ -71,7 +71,7 @@ export default function CancelApplication() {
             <Field label={t('uc01.location')} required>
               <Input value={form.location} onChange={e => setForm(f => ({ ...f, location: e.target.value }))} />
             </Field>
-            <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+            <div className="two-col" style={{ gap: 10 }}>
               <Field label={t('common.from')} required>
                 <Input type="date" value={form.from} onChange={e => setForm(f => ({ ...f, from: e.target.value }))} />
               </Field>
