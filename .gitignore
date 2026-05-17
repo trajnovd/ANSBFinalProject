@@ -1,0 +1,20 @@
+# Tool internals
+.claude/
+.vscode/
+.idea/
+.DS_Store
+*.swp
+
+# Build / dependencies (also covered by stgs/.gitignore)
+node_modules/
+dist/
+dist-ssr/
+
+# Env files — never commit Supabase keys, even publishable ones
+.env
+.env.*
+*.local
+!.env.example
+
+# Logs
+*.log
