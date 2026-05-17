@@ -36,17 +36,30 @@ export default function Login() {
   }
   function quickLoginAs(userId) { loginAs(userId); nav('/') }
 
-  const demoUsers = [
-    { id: 'u_aleksandar', name: 'Александар Костадинов', role: 'Applicant', sub: 'проф. д-р · ФИНКИ' },
-    { id: 'u_marija',     name: 'Марија Стојановска', role: 'Applicant', sub: 'доц. д-р · ФИНКИ' },
-    { id: 'u_petar',      name: 'Петар Ангеловски', role: 'Applicant', sub: 'асист. м-р · ФИНКИ' },
-    { id: 'u_visiting',   name: 'Елена Спировска', role: 'Applicant', sub: 'визитинг · ПМФ' },
-    { id: 'u_council1',   name: 'Дарко Поповски', role: 'ScientificCouncil', sub: 'Научен совет' },
-    { id: 'u_dean',       name: 'Кире Тримчев', role: 'DeanOffice', sub: 'Декан / Деканат' },
-    { id: 'u_acct',       name: 'Билјана Митровска', role: 'Accounting', sub: 'Сметководство' },
-    { id: 'u_arhiva',     name: 'Архива ФИНКИ', role: 'Archive', sub: 'Архива' },
-    { id: 'u_admin',      name: 'Систем Администратор', role: 'SystemAdmin', sub: 'NFR-001 · ревизорска трага' },
-  ]
+  // Build the demo-user list from whatever is in the store right now.
+  // IDs come from Supabase (UUIDs), so we can't hardcode them.
+  const roleSub = {
+    ScientificCouncil: 'Научен совет',
+    DeanOffice: 'Декан / Деканат',
+    Accounting: 'Сметководство',
+    HR: 'Кадровска',
+    Archive: 'Архива',
+    SystemAdmin: 'NFR-001 · ревизорска трага',
+  }
+  const roleOrder = {
+    Applicant: 0, ScientificCouncil: 1, DeanOffice: 2,
+    Accounting: 3, HR: 4, Archive: 5, SystemAdmin: 6,
+  }
+  const demoUsers = [...state.users]
+    .sort((a, b) => (roleOrder[a.role] ?? 9) - (roleOrder[b.role] ?? 9))
+    .map(u => ({
+      id: u.id,
+      name: u.firstName + ' ' + u.lastName,
+      role: u.role,
+      sub: u.role === 'Applicant'
+        ? (u.title ? u.title + ' · ' : '') + (u.applicantType === 'UKIM_Visiting' ? 'визитинг · УКИМ' : 'ФИНКИ')
+        : (roleSub[u.role] ?? u.role),
+    }))
 
   const features = [
     { icon: <I.FilePlus size={16} />, title: 'Електронско поднесување', body: 'Wizard со 4 чекори, sibling + overlap детекција' },
